@@ -5,6 +5,7 @@
     <title>@yield('title', 'Aplikasi Barang')</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
+    
 </head>
 <body class="font-sans bg-soft-light text-accent min-h-screen">
 
