@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
     
 </head>
-<body class="font-sans bg-soft-light text-accent min-h-screen">
+<body class="font-sans bg-soft-light text-accent min-h-screen  bg-gradient-to-br from-blue-300 to-purple-300">
 
     {{-- Navbar --}}
     @include('partials.navbar')
@@ -23,6 +23,8 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
+@yield('scripts')
 </html>
     
