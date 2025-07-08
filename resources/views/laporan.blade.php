@@ -16,7 +16,7 @@
                 <label class="block text-sm mb-1">Tanggal Selesai</label>
                 <input type="date" class="w-full border rounded px-3 py-2">
             </div>
-            <button class="bg-blue-600 text-white mt-6 py-2 rounded hover:bg-blue-700 col-span-full md:col-span-1">
+            <button class="bg-primary text-white mt-6 py-2 rounded hover:bg-kk col-span-full md:col-span-1">
                 Tampilkan
             </button>
         </form>
