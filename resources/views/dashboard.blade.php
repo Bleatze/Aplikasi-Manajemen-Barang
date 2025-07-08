@@ -77,9 +77,6 @@ $barangKritis = array_filter($barangList, fn($b) => $b['statusValue'] === 'kriti
 <div id="notifKritis" class="bg-white p-4 rounded shadow animate-fade relative">
     <div class="flex justify-between items-center mb-2">
         <h2 class="text-md font-semibold text-red-600 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414-1.414L12 9.172 7.05 4.222 5.636 5.636 10.586 10.586 5.636 15.536l1.414 1.414L12 12.828l4.95 4.95 1.414-1.414L13.414 10.586 18.364 5.636z" />
-            </svg>
             Barang Kritis
         </h2>
         <div class="flex items-center gap-2">

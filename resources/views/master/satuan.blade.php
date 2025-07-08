@@ -12,7 +12,7 @@
                 <label class="block text-sm font-medium mb-1">Nama Satuan</label>
                 <input type="text" name="nama" class="w-full border-gray-300 rounded px-3 py-2 shadow-sm" placeholder="Contoh: Pcs, Liter, Kg">
             </div>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">
                 Tambah
             </button>
         </form>

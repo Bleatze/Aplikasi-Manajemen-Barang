@@ -6,7 +6,7 @@
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans bg-gradient-to-br from-blue-300 to-purple-300 min-h-screen text-accent">
+<body class="font-sans bg-haha">
 
     {{-- Navbar Tetap di Atas --}}
     <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">

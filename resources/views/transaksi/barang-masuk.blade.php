@@ -23,7 +23,7 @@
                 <label class="block text-sm mb-1">Jumlah</label>
                 <input type="number" class="w-full border rounded px-3 py-2" placeholder="0">
             </div>
-            <button class="bg-blue-600 text-white mt-6 py-2 rounded hover:bg-blue-700 col-span-full md:col-span-1">
+            <button class="bg-primary text-white mt-6 py-2 rounded hover:bg-kk col-span-full md:col-span-1">
                 Tambah
             </button>
         </form>

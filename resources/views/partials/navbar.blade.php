@@ -1,4 +1,4 @@
-<header class="bg-soft text-white shadow px-6 py-4">
+<header class="bg-ob text-white shadow px-6 py-4">
     <div class="flex justify-between items-center">
         
         <h1 class="text-xl font-bold">Aplikasi Manajemen Barang</h1>
