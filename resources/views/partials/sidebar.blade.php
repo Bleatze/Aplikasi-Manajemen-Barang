@@ -1,5 +1,5 @@
 <aside class="w-64 bg-ob shadow h-screen p-6 space-y-4 hidden md:block text-white">
-
+     <h2 class="font-semibold text-white">Menu</h2>
     <a href="{{ route('dashboard') }}"
        class="flex items-center gap-2 transform transition-all duration-200 hover:translate-x-1 p-2 rounded 
        {{ request()->routeIs('dashboard') ? 'bg-primary text-white' : 'hover:bg-kk' }}">
@@ -39,7 +39,7 @@
     </a>
 
     <hr>
-
+     <h2 class="font-semibold text-white">Transaksi</h2>
     <a href="{{ route('barang-masuk.index') }}"
        class="flex items-center gap-2 transform transition-all duration-200 hover:translate-x-1 p-2 rounded 
        {{ request()->routeIs('barang-masuk.*') ? 'bg-primary text-white' : 'hover:bg-kk' }}">
@@ -55,7 +55,7 @@
     </a>
 
     <hr>
-
+     <h2 class="font-semibold text-white">Lainnya</h2>
     <a href="{{ route('laporan.index') }}"
        class="flex items-center gap-2 transform transition-all duration-200 hover:translate-x-1 p-2 rounded 
        {{ request()->routeIs('laporan.*') ? 'bg-primary text-white' : 'hover:bg-kk' }}">

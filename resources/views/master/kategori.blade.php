@@ -6,7 +6,7 @@
     <h1 class="text-2xl font-semibold mb-4">Data Kategori</h1>
 
     {{-- Form Tambah Kategori --}}
-    <div class=" p-4 mb-6 space-y-4 md:flex md:items-end md:space-x-4 md:space-y-0">
+    <div class="p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
          <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"

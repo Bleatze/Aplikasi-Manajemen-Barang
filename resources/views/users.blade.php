@@ -6,7 +6,7 @@
 <h1 class="text-2xl font-semibold mb-4">Manajemen User</h1>
 
 {{-- Search + Filter + Tambah User --}}
-<div class=" p-4 mb-6 space-y-4 md:flex md:items-end md:space-x-4 md:space-y-0">
+<div class=" p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex items-center gap-4 flex-wrap">
         <!-- Search Input -->
         <div class="relative">
