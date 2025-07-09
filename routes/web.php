@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/barang-keluar', [DashboardController::class, 'barangKeluar'])->name('barang-keluar.index');
     Route::get('/laporan', [DashboardController::class, 'laporan'])->name('laporan.index');
     Route::get('/users', [DashboardController::class, 'users'])->name('users.index');
+    Route::post('/user/add', [UserController::class, 'add'])->name('users.add');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
