@@ -6,7 +6,7 @@
 <h1 class="text-2xl font-semibold mb-4">Manajemen User</h1>
 
 {{-- Search + Filter + Tambah User --}}
-<div class=" p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div class=" p-4 mb-6 space-y-4 md:flex md:items-end md:space-x-4 md:space-y-0">
     <div class="flex items-center gap-4 flex-wrap">
         <!-- Search Input -->
         <div class="relative">
@@ -22,21 +22,20 @@
         </div>
 
        <div class="relative inline-block">
-    <!-- Ikon filter -->
-    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter"
-             class="w-4 h-4">
-    </span>
-
-    <!-- Select dengan padding kiri agar tidak menabrak ikon -->
-    <select class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
-        <option value="">Semua Peran</option>
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-    </select>
+             <!-- Ikon filter -->
+             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                 <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter"
+                      class="w-4 h-4">
+             </span>
+         
+                 <!-- Select dengan padding kiri agar tidak menabrak ikon -->
+             <select class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
+                 <option value="">Semua Peran</option>
+                 <option value="admin">Admin</option>
+                 <option value="user">User</option>
+             </select>
+         </div>
 </div>
-
-    </div>
 
     <!-- Tombol buka modal -->
 <button onclick="openModal()" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
@@ -95,7 +94,7 @@
 </div>
 
 
-</div>
+    </div>
 
 {{-- Tabel Daftar User --}}
 <div class="bg-white rounded shadow overflow-x-auto">
@@ -146,8 +145,9 @@
         document.getElementById('modal-tambah-user').classList.remove('flex');
     }
     function handleBackdropClick(event) {
-        // Kalau klik di area backdrop, close modal
-        closeModal();
+       if(event.target===event.currentTarget){
+         closeModal();
+       }
     }
 </script>
 @endsection
