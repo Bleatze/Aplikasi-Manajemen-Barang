@@ -220,7 +220,7 @@ function openEditModal(id) {
 function closeEditModal(id) {
     document.getElementById('modal-edit-user-' + id).classList.add('hidden');
     document.getElementById('modal-edit-user-' + id).classList.remove('flex');
-    resetEditModal();
+    resetEditModal(id);
 }
 function resetEditModal(id) {
     const modal = document.getElementById('modal-edit-user-' + id);
@@ -230,12 +230,6 @@ function resetEditModal(id) {
         } else if (input.name !== '_token' && input.name !== '_method') {
             input.value = '';
         }
-    modal.querySelectorAll('select').forEach(select => {
-        select.selectedIndex = 0;
-    });
-    modal.querySelectorAll('.alert').forEach(alert => {
-        alert.remove();
-    });
     });
     modal.querySelectorAll('select').forEach(select => {
         select.selectedIndex = 0;
