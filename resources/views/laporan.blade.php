@@ -6,7 +6,7 @@
     <h1 class="text-2xl font-semibold mb-4">Laporan Barang</h1>
 
     {{-- Filter Tanggal --}}
-    <div class="bg-white p-4 rounded shadow mb-6">
+    <div class=" p-4 mb-6">
         <form class="grid md:grid-cols-3 gap-4">
             <div>
                 <label class="block text-sm mb-1">Tanggal Mulai</label>
