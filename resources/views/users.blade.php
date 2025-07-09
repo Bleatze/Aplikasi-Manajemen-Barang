@@ -6,7 +6,7 @@
 <h1 class="text-2xl font-semibold mb-4">Manajemen User</h1>
 
 {{-- Search + Filter + Tambah User --}}
-<div class=" p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div class="p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex items-center gap-4 flex-wrap">
         <!-- Search Input -->
         <div class="relative">
@@ -21,83 +21,77 @@
                    class="bg-white pl-10 pr-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none w-64">
         </div>
 
-       <div class="relative inline-block">
-    <!-- Ikon filter -->
-    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter"
-             class="w-4 h-4">
-    </span>
-
-    <!-- Select dengan padding kiri agar tidak menabrak ikon -->
-    <select class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
-        <option value="">Semua Peran</option>
-        <option value="admin">Admin</option>
-        <option value="user">User</option>
-    </select>
-</div>
-
+        <div class="relative inline-block">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter" class="w-4 h-4">
+            </span>
+            <select class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
+                <option value="">Semua Peran</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+        </div>
     </div>
 
-    <!-- Tombol buka modal -->
-<button onclick="openModal()" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
-    <img src="https://api.iconify.design/mdi/account-plus.svg?color=white" alt="Add User" class="w-5 h-5">
-    Tambah User
-</button>
+    <!-- Tombol buka modal tambah -->
+    <button onclick="openModal()" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
+        <img src="https://api.iconify.design/mdi/account-plus.svg?color=white" alt="Add User" class="w-5 h-5">
+        Tambah User
+    </button>
+</div>
 
-
-<!-- Modal backdrop -->
+<!-- Modal tambah user -->
 <div id="modal-tambah-user" onclick="handleBackdropClick(event)" class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
-    <!-- Modal box -->
     <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg relative">
-        <!-- Tombol close -->
         <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
             <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
         </button>
-
+        @if ($errors->any())
+            <div class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded m-4 animate-fade">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <strong class="font-bold">Oops!</strong>
+                        <ul class="mt-1 list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <button type="button" onclick="closeAlert(this)" class="font-bold px-2">×</button>
+                </div>
+            </div>
+        @endif
         <h2 class="text-xl font-semibold mb-4">Tambah User</h2>
-
-        <form action="" method="POST" class="space-y-4">
+        <form action="{{ route('users.add') }}" method="POST" class="space-y-4">
             @csrf
-
             <div>
-                <label for="name" class="block text-sm font-medium">Nama</label>
-                <input type="text" name="name" id="name" required
-                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary">
+                <label class="block text-sm font-medium">Nama</label>
+                <input type="text" name="name" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
             </div>
-
             <div>
-                <label for="email" class="block text-sm font-medium">Email</label>
-                <input type="email" name="email" id="email" required
-                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary">
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" name="email" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
             </div>
-
             <div>
-                <label for="role" class="block text-sm font-medium">Peran</label>
-                <select name="role" id="role"
-                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary">
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
+                <label class="block text-sm font-medium">Peran</label>
+                <select name="role" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                    <option value="admin">admin</option>
+                    <option value="user">user</option>
                 </select>
             </div>
-
             <div>
-                <label for="password" class="block text-sm font-medium">Password</label>
-                <input type="password" name="password" id="password" required
-                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-primary">
+                <label class="block text-sm font-medium">Password</label>
+                <input type="password" name="password" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
             </div>
-
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
-                <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">Simpan</button>
+                <button type="button" onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-
-</div>
-
-{{-- Tabel Daftar User --}}
+{{-- Tabel daftar user --}}
 <div class="bg-white rounded shadow overflow-x-auto">
     <table class="min-w-full text-sm text-left">
         <thead class="bg-gray-300 text-gray-700">
@@ -110,44 +104,167 @@
             </tr>
         </thead>
         <tbody>
-            @for ($i = 1; $i <= 5; $i++)
+            @foreach ($users as $no => $user)
             <tr class="border-b hover:bg-gray-50">
-                <td class="px-4 py-3">{{ $i }}</td>
-                <td class="px-4 py-3">User {{ $i }}</td>
-                <td class="px-4 py-3">user{{ $i }}@example.com</td>
-                <td class="px-4 py-3">{{ $i % 2 == 0 ? 'Admin' : 'User' }}</td>
+                <td class="px-4 py-3">{{ $no+1 }}</td>
+                <td class="px-4 py-3">{{ $user->name }}</td>
+                <td class="px-4 py-3">{{ $user->email }}</td>
+                <td class="px-4 py-3">{{ $user->role }}</td>
                 <td class="px-4 py-3 text-center space-x-2">
-                    <!-- Tombol Edit -->
-                    <a href="#" class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
-                        <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1" alt="Edit">
-                        Edit
+                    <a href="#" onclick="openEditModal({{ $user->id }})" class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
+                        <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1" alt="Edit"> Edit
                     </a>
-
-                    <!-- Tombol Hapus -->
-                    <button onclick="confirm('Yakin ingin menghapus user ini?')"
-                            class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
-                        <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1" alt="Delete">
-                        Hapus
+                    <button onclick="confirm('Yakin ingin menghapus user ini?')" class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                        <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1" alt="Delete"> Hapus
                     </button>
                 </td>
             </tr>
-            @endfor
+
+            <!-- Modal edit user (satu per user) -->
+            <div id="modal-edit-user-{{ $user->id }}" onclick="handleBackdropClickEdit(event)" class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
+                <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg relative">
+                    <button onclick="closeEditModal({{ $user->id }})" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
+                        <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
+                    </button>
+                    @if ($errors->any())
+                        <div class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded m-4 animate-fade">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <strong class="font-bold">Oops!</strong>
+                                    <ul class="mt-1 list-disc list-inside text-sm">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <button type="button" onclick="closeAlert(this)" class="font-bold px-2">×</button>
+                            </div>
+                        </div>
+                    @endif
+                    <h2 class="text-xl font-semibold mb-4">Edit User</h2>
+                    <form action="{{ route('users.update', $user->id) }}" method="POST" class="space-y-4">
+                        @csrf
+                        @method('PUT')
+                        <div>
+                            <label class="block text-sm font-medium">Nama</label>
+                            <input type="text" name="name" value="{{ $user->name }}" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Email</label>
+                            <input type="email" name="email" value="{{ $user->email }}" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium">Peran</label>
+                            <select name="role" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>admin</option>
+                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>user</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="change-password-checkbox-{{ $user->id }}" onchange="togglePasswordInput({{ $user->id }})" class="form-checkbox text-primary">
+                                <span class="ml-2">Ganti Password</span>
+                            </label>
+                        </div>
+                        <div id="password-input-{{ $user->id }}" class="hidden">
+                            <label class="block text-sm font-medium">Password Baru</label>
+                            <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            <button type="button" onclick="closeEditModal({{ $user->id }})" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+                            <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @endforeach
         </tbody>
     </table>
 </div>
-<script>
-    function openModal() {
-        document.getElementById('modal-tambah-user').classList.remove('hidden');
-        document.getElementById('modal-tambah-user').classList.add('flex');
-    }
 
-    function closeModal() {
-        document.getElementById('modal-tambah-user').classList.add('hidden');
-        document.getElementById('modal-tambah-user').classList.remove('flex');
-    }
-    function handleBackdropClick(event) {
-        // Kalau klik di area backdrop, close modal
+<script>
+function openModal() {
+    document.getElementById('modal-tambah-user').classList.remove('hidden');
+    document.getElementById('modal-tambah-user').classList.add('flex');
+}
+function closeModal() {
+    document.getElementById('modal-tambah-user').classList.add('hidden');
+    document.getElementById('modal-tambah-user').classList.remove('flex');
+    resetModal();
+}
+function resetModal() {
+    const modal = document.getElementById('modal-tambah-user');
+    modal.querySelectorAll('input').forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.checked = false;
+        } else if(input.name !== '_token') { // jangan reset CSRF token
+            input.value = '';
+        }
+    });
+    modal.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+    modal.querySelectorAll('.alert').forEach(alert => {
+        alert.remove();
+    });
+}
+function handleBackdropClick(event) {
+    if(event.target === event.currentTarget){
         closeModal();
     }
+}
+function openEditModal(id) {
+    document.getElementById('modal-edit-user-' + id).classList.remove('hidden');
+    document.getElementById('modal-edit-user-' + id).classList.add('flex');
+}
+function closeEditModal(id) {
+    document.getElementById('modal-edit-user-' + id).classList.add('hidden');
+    document.getElementById('modal-edit-user-' + id).classList.remove('flex');
+    resetEditModal();
+}
+function resetEditModal(id) {
+    const modal = document.getElementById('modal-edit-user-' + id);
+    modal.querySelectorAll('input').forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.checked = false;
+        } else if (input.name !== '_token' && input.name !== '_method') {
+            input.value = '';
+        }
+    modal.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+    modal.querySelectorAll('.alert').forEach(alert => {
+        alert.remove();
+    });
+    });
+    modal.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+    });
+    modal.querySelectorAll('.alert').forEach(alert => {
+        alert.remove();
+    });
+}
+function handleBackdropClickEdit(event) {
+    if(event.target === event.currentTarget){
+        document.querySelectorAll('[id^="modal-edit-user-"]').forEach(modal => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        });
+    }
+}
+function togglePasswordInput(id) {
+    const checkbox = document.getElementById('change-password-checkbox-' + id);
+    const passwordInput = document.getElementById('password-input-' + id);
+    if (checkbox.checked) {
+        passwordInput.classList.remove('hidden');
+    } else {
+        passwordInput.classList.add('hidden');
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+        @if ($errors->any())
+            openModal(); // panggil fungsi JS kamu yang sudah ada
+        @endif
+    });
 </script>
 @endsection
