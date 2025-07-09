@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -23,16 +24,23 @@ class UserController extends Controller
         ]);
         return redirect()->back()->with('success','Berhasil menambahkan user');
     }
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $user = User::findOrFail($id);
 
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$id,
             'role'  => 'required|in:admin,user',
             'password' => 'nullable|min:6',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator, 'edit_'.$id) 
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
 
         $user->name  = $validated['name'];
         $user->email = $validated['email'];
@@ -44,6 +52,14 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+        return redirect()->back()->with('success','Berhasil mengedit user');
     }
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Berhasil menghapus user');
+    }
+
 }

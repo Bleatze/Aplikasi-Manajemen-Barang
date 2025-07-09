@@ -8,29 +8,32 @@
 {{-- Search + Filter + Tambah User --}}
 <div class="p-4 rounded mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div class="flex items-center gap-4 flex-wrap">
-        <!-- Search Input -->
-        <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                     viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
-                </svg>
-            </span>
-            <input type="text" placeholder="Cari user..."
-                   class="bg-white pl-10 pr-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none w-64">
-        </div>
+        <form method="GET" action="{{ route('users.index') }}" id="filter-form" class="flex items-center gap-4 flex-wrap">
+            <!-- Input search -->
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+                    </svg>
+                </span>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari user..."
+                    class="bg-white pl-10 pr-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none w-64">
+            </div>
 
-        <div class="relative inline-block">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter" class="w-4 h-4">
-            </span>
-            <select class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
-                <option value="">Semua Peran</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-            </select>
-        </div>
+            <!-- Select role -->
+            <div class="relative inline-block">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <img src="https://api.iconify.design/mdi/filter-variant.svg?color=gray" alt="Filter" class="w-4 h-4">
+                </span>
+                <select name="role" class="bg-white border border-gray-300 shadow rounded py-2 pl-9 pr-3 text-sm text-gray-600 focus:outline-none">
+                    <option value="">Semua Peran</option>
+                    <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+                </select>
+            </div>
+        </form>
     </div>
 
     <!-- Tombol buka modal tambah -->
@@ -111,10 +114,10 @@
                 <td class="px-4 py-3">{{ $user->email }}</td>
                 <td class="px-4 py-3">{{ $user->role }}</td>
                 <td class="px-4 py-3 text-center space-x-2">
-                    <a href="#" onclick="openEditModal({{ $user->id }})" class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
+                    <button onclick="openEditModal({{ $user->id }})" class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
                         <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1" alt="Edit"> Edit
-                    </a>
-                    <button onclick="confirm('Yakin ingin menghapus user ini?')" class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                    </button>
+                    <button onclick="openDeleteModal({{ $user->id }})" class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
                         <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1" alt="Delete"> Hapus
                     </button>
                 </td>
@@ -126,13 +129,13 @@
                     <button onclick="closeEditModal({{ $user->id }})" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
                         <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
                     </button>
-                    @if ($errors->any())
+                    @if ($errors->getBag('edit_'.$user->id)->any())
                         <div class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded m-4 animate-fade">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <strong class="font-bold">Oops!</strong>
                                     <ul class="mt-1 list-disc list-inside text-sm">
-                                        @foreach ($errors->all() as $error)
+                                        @foreach ($errors->getBag('edit_'.$user->id)->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
@@ -170,7 +173,7 @@
                             <label class="block text-sm font-medium">Password Baru</label>
                             <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
                         </div>
-                        <div class="flex justify-end gap-2">
+                        <div class="flex justify-end gap-2 mt-2">
                             <button type="button" onclick="closeEditModal({{ $user->id }})" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                             <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
                         </div>
@@ -182,83 +185,146 @@
     </table>
 </div>
 
+<!-- Modal konfirmasi hapus -->
+<div id="modal-confirm-delete" onclick="handleBackdropClickDelete(event)" class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
+    <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-lg relative">
+        <button onclick="closeDeleteModal()" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
+            <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
+        </button>
+        <h2 class="text-xl font-semibold mb-4">Konfirmasi Hapus</h2>
+        <p class="mb-6">Apakah Anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan.</p>
+        <div class="flex justify-end gap-2">
+            <button type="button" onclick="closeDeleteModal()" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+            <form id="form-delete-user" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Hapus</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <script>
-function openModal() {
-    document.getElementById('modal-tambah-user').classList.remove('hidden');
-    document.getElementById('modal-tambah-user').classList.add('flex');
-}
-function closeModal() {
-    document.getElementById('modal-tambah-user').classList.add('hidden');
-    document.getElementById('modal-tambah-user').classList.remove('flex');
-    resetModal();
-}
-function resetModal() {
-    const modal = document.getElementById('modal-tambah-user');
-    modal.querySelectorAll('input').forEach(input => {
-        if (input.type === 'checkbox' || input.type === 'radio') {
-            input.checked = false;
-        } else if(input.name !== '_token') { // jangan reset CSRF token
-            input.value = '';
-        }
+    document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.querySelector('input[name="search"]');
+    const roleSelect = document.querySelector('select[name="role"]');
+    const form = document.getElementById('filter-form');
+
+    let typingTimer;
+    searchInput.addEventListener('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            form.submit();
+        }, 500);
     });
-    modal.querySelectorAll('select').forEach(select => {
-        select.selectedIndex = 0;
+
+    roleSelect.addEventListener('change', function () {
+        form.submit();
     });
-    modal.querySelectorAll('.alert').forEach(alert => {
-        alert.remove();
     });
-}
-function handleBackdropClick(event) {
-    if(event.target === event.currentTarget){
-        closeModal();
+    function openModal() {
+        document.getElementById('modal-tambah-user').classList.remove('hidden');
+        document.getElementById('modal-tambah-user').classList.add('flex');
     }
-}
-function openEditModal(id) {
-    document.getElementById('modal-edit-user-' + id).classList.remove('hidden');
-    document.getElementById('modal-edit-user-' + id).classList.add('flex');
-}
-function closeEditModal(id) {
-    document.getElementById('modal-edit-user-' + id).classList.add('hidden');
-    document.getElementById('modal-edit-user-' + id).classList.remove('flex');
-    resetEditModal(id);
-}
-function resetEditModal(id) {
-    const modal = document.getElementById('modal-edit-user-' + id);
-    modal.querySelectorAll('input').forEach(input => {
-        if (input.type === 'checkbox' || input.type === 'radio') {
-            input.checked = false;
-        } else if (input.name !== '_token' && input.name !== '_method') {
-            input.value = '';
-        }
-    });
-    modal.querySelectorAll('select').forEach(select => {
-        select.selectedIndex = 0;
-    });
-    modal.querySelectorAll('.alert').forEach(alert => {
-        alert.remove();
-    });
-}
-function handleBackdropClickEdit(event) {
-    if(event.target === event.currentTarget){
-        document.querySelectorAll('[id^="modal-edit-user-"]').forEach(modal => {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+    function closeModal() {
+        document.getElementById('modal-tambah-user').classList.add('hidden');
+        document.getElementById('modal-tambah-user').classList.remove('flex');
+        resetModal();
+    }
+    function resetModal() {
+        const modal = document.getElementById('modal-tambah-user');
+        modal.querySelectorAll('input').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else if(input.name !== '_token') { // jangan reset CSRF token
+                input.value = '';
+            }
+        });
+        modal.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+        });
+        modal.querySelectorAll('.alert').forEach(alert => {
+            alert.remove();
         });
     }
-}
-function togglePasswordInput(id) {
-    const checkbox = document.getElementById('change-password-checkbox-' + id);
-    const passwordInput = document.getElementById('password-input-' + id);
-    if (checkbox.checked) {
-        passwordInput.classList.remove('hidden');
-    } else {
-        passwordInput.classList.add('hidden');
+    function handleBackdropClick(event) {
+        if(event.target === event.currentTarget){
+            closeModal();
+        }
     }
-}
-document.addEventListener('DOMContentLoaded', function() {
+    function openEditModal(id) {
+        document.getElementById('modal-edit-user-' + id).classList.remove('hidden');
+        document.getElementById('modal-edit-user-' + id).classList.add('flex');
+    }
+    function closeEditModal(id) {
+        document.getElementById('modal-edit-user-' + id).classList.add('hidden');
+        document.getElementById('modal-edit-user-' + id).classList.remove('flex');
+        resetEditModal(id);
+    }
+    function resetEditModal(id) {
+        const modal = document.getElementById('modal-edit-user-' + id);
+        modal.querySelectorAll('input').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else if (input.name !== '_token' && input.name !== '_method') {
+                input.value = '';
+            }
+        });
+        modal.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+        });
+        modal.querySelectorAll('.alert').forEach(alert => {
+            alert.remove();
+        });
+    }
+    function handleBackdropClickEdit(event) {
+        if(event.target === event.currentTarget){
+            document.querySelectorAll('[id^="modal-edit-user-"]').forEach(modal => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+        }
+    }
+    let deleteUserId = null;
+
+    function openDeleteModal(id) {
+        deleteUserId = id;
+        const form = document.getElementById('form-delete-user');
+        form.action = '/users/' + id; // ganti sesuai route
+        document.getElementById('modal-confirm-delete').classList.remove('hidden');
+        document.getElementById('modal-confirm-delete').classList.add('flex');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('modal-confirm-delete').classList.add('hidden');
+        document.getElementById('modal-confirm-delete').classList.remove('flex');
+        deleteUserId = null;
+    }
+
+    function handleBackdropClickDelete(event) {
+        if (event.target === event.currentTarget) {
+            closeDeleteModal();
+        }
+    }
+    function togglePasswordInput(id) {
+        const checkbox = document.getElementById('change-password-checkbox-' + id);
+        const passwordInput = document.getElementById('password-input-' + id);
+        if (checkbox.checked) {
+            passwordInput.classList.remove('hidden');
+        } else {
+            passwordInput.classList.add('hidden');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
         @if ($errors->any())
-            openModal(); // panggil fungsi JS kamu yang sudah ada
+            openModal();
         @endif
+        @foreach ($users as $user)
+            @if ($errors->getBag('edit_'.$user->id)->any())
+                openEditModal({{ $user->id }});
+            @endif
+        @endforeach
     });
 </script>
 @endsection

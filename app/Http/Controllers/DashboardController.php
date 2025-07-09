@@ -60,9 +60,25 @@ class DashboardController extends Controller
         return view('laporan');
     }
 
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->get();
+
         return view('users', compact('users'));
+
     }
 }
