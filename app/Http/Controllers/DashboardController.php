@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -30,14 +32,32 @@ class DashboardController extends Controller
         return view('dashboard', compact('labels', 'barangMasuk', 'barangKeluar'));
     }
 
-    public function kategori()
+    public function kategori(Request $request)
     {
-        return view('master.kategori');
+        $query = Category::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('category_name', 'like', "%{$search}%");
+        }
+
+        $kategoris = $query->get();
+
+        return view('master.kategori', compact('kategoris'));
     }
 
-    public function satuan()
+    public function satuan(Request $request)
     {
-        return view('master.satuan');
+        $query = Unit::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('unit_name', 'like', "%{$search}%");
+        }
+
+        $units = $query->get();
+
+        return view('master.satuan', compact('units'));
     }
 
     public function barang()
