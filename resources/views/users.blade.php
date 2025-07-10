@@ -84,7 +84,24 @@
             </div>
             <div>
                 <label class="block text-sm font-medium">Password</label>
-                <input type="password" name="password" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                <div class="relative">
+                    <input type="password" name="password" id="password" required
+                           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                    
+                    <button type="button" onclick="togglePassword()" 
+                            class="absolute right-2 top-2 text-gray-500 hover:text-blue-600 transition-colors">
+                        <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5l1.5 2M8 4l1 2M12 3v2M16 4l-1 2M20 5l-1.5 2" />
+                        </svg>
+
+                        <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2 12s4-5 10-5 10 5 10 5-4 5-10 5S2 12 2 12z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 9c2-2 6-3 8-3s6 1 8 3" />
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
@@ -171,7 +188,24 @@
                         </div>
                         <div id="password-input-{{ $user->id }}" class="hidden">
                             <label class="block text-sm font-medium">Password Baru</label>
-                            <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                <div class="relative">
+                    <input type="password" name="password" id="password" required
+                           class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                    
+                    <button type="button" onclick="togglePassword()" 
+                            class="absolute right-2 top-2 text-gray-500 hover:text-blue-600 transition-colors">
+                        <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5l1.5 2M8 4l1 2M12 3v2M16 4l-1 2M20 5l-1.5 2" />
+                        </svg>
+
+                        <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2 12s4-5 10-5 10 5 10 5-4 5-10 5S2 12 2 12z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 9c2-2 6-3 8-3s6 1 8 3" />
+                        </svg>
+                    </button>
+                </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-2">
                             <button type="button" onclick="closeEditModal({{ $user->id }})" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
@@ -326,5 +360,15 @@
             @endif
         @endforeach
     });
+     function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const eyeOpen = document.getElementById("eyeOpen");
+            const eyeClosed = document.getElementById("eyeClosed");
+
+            const isHidden = passwordInput.type === "password";
+            passwordInput.type = isHidden ? "text" : "password";
+            eyeOpen.classList.toggle("hidden", !isHidden);
+            eyeClosed.classList.toggle("hidden", isHidden);
+        }
 </script>
 @endsection
