@@ -66,7 +66,7 @@
             </div>
 
             <button type="submit" id="loginButton"
-                    class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center relative">
+                    class="w-full bg-primary text-white py-2 rounded hover:bg-kk transition-colors duration-200 flex items-center justify-center relative">
                 <span id="buttonText">Masuk</span>
                 <svg id="spinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body class="font-sans bg-haha">
+<body class="font-sans bg-stone-200">
 
     {{-- Navbar Tetap di Atas --}}
     <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
