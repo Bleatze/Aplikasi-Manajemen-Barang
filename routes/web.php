@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +25,13 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/kategori', [DashboardController::class, 'kategori'])->name('kategori.index');
+    Route::post('/kategori/add', [CategoryController::class, 'add'])->name('kategori.add');
+    Route::put('/kategori/{id}', [CategoryController::class, 'update'])->name('kategori.update');
+    Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])->name('kategori.destroy');
     Route::get('/satuan', [DashboardController::class, 'satuan'])->name('satuan.index');
+    Route::post('/satuan/add', [UnitController::class, 'add'])->name('satuan.add');
+    Route::put('/satuan/{id}', [UnitController::class, 'update'])->name('satuan.update');
+    Route::delete('/satuan/{id}', [UnitController::class, 'destroy'])->name('satuan.destroy');
     Route::get('/barang', [DashboardController::class, 'barang'])->name('barang.index');
     Route::get('/barang-masuk', [DashboardController::class, 'barangMasuk'])->name('barang-masuk.index');
     Route::get('/barang-keluar', [DashboardController::class, 'barangKeluar'])->name('barang-keluar.index');
