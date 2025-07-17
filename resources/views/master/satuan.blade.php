@@ -67,9 +67,15 @@
                 <td class="px-4 py-2">{{ $satuan->unit_name }}</td>
                 <td class="px-4 py-2 text-center space-x-2">
                     <button onclick="openEditModal({{ $satuan->id }})"
-                        class="bg-yellow-400 px-2 py-1 text-white rounded hover:bg-yellow-500">Edit</button>
+                        class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
+                        <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1"
+                            alt="Edit"> Edit
+                    </button>
                     <button onclick="openDeleteModal({{ $satuan->id }})"
-                        class="bg-red-500 px-2 py-1 text-white rounded hover:bg-red-600">Hapus</button>
+                        class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                        <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1"
+                            alt="Delete"> Hapus
+                    </button>
                 </td>
             </tr>
 
@@ -90,7 +96,7 @@
                             <input type="text" name="unit_name" value="{{ $satuan->name }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
                         </div>
-                        <div class="flex justify-end gap-2">
+                        <div class="flex justify-end gap-2 mt-2">
                             <button type="button" onclick="closeEditModal({{ $satuan->id }})"
                                 class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                             <button type="submit"

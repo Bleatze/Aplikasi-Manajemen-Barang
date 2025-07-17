@@ -120,7 +120,7 @@
                             <input type="text" name="category_name" value="{{ $kategori->category_name }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
                         </div>
-                        <div class="flex justify-end gap-2">
+                        <div class="flex justify-end gap-2 mt-2">
                             <button type="button" onclick="closeEditModal({{ $kategori->id }})"
                                 class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                             <button type="submit"
