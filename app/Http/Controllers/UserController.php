@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$id,
+            'email' => 'required|email|unique:table_users,email,'.$id,
             'role'  => 'required|in:admin,user',
             'password' => 'nullable|min:6',
         ]);
@@ -54,8 +54,7 @@ class UserController extends Controller
 
         return redirect()->back()->with('success','Berhasil mengedit user');
     }
-    public function destroy($id)
-    {
+    public function destroy($id){
         $user = User::findOrFail($id);
         $user->delete();
 
