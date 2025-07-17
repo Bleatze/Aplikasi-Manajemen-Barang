@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Ware;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -60,9 +61,19 @@ class DashboardController extends Controller
         return view('master.satuan', compact('units'));
     }
 
-    public function barang()
+    public function barang(Request $request)
     {
-        return view('master.barang');
+        $query = Ware::with(['category','unit']);
+        if($request->category_id){
+            $query->where('category_id',$request->category_id);
+        }
+        if($request->search){
+            $query->where('ware_name','like','%' . $request->search . '%');
+        }
+        $wares = $query->get();
+        $units = Unit::all();
+        $categories = Category::all();
+        return view('master.barang',compact('wares','categories','units'));
     }
 
     public function barangMasuk()
