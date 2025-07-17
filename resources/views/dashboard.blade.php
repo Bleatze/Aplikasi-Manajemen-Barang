@@ -142,7 +142,7 @@ $barangKritis = array_filter($barangList, fn($b) => $b['statusValue'] === 'kriti
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-7 7V20l-4-2v-6.293l-7-7A1 1 0 013 4z" />
                     </svg>
                 </span>
-                <select id="filterStatus" class="pl-10 pr-3 py-2 border border-gray-300 rounded-full shadow-sm w-48">
+                <select id="filterStatus" class="pl-10 pr-3 py-2 border border-gray-300 shadow-sm w-48">
                     <option value="semua">Semua Status</option>
                     <option value="aman">Aman</option>
                     <option value="menipis">Menipis</option>

@@ -16,7 +16,7 @@
                 <label class="block text-sm mb-1">Tanggal Selesai</label>
                 <input type="date" class="w-full border rounded px-3 py-2">
             </div>
-            <button class="bg-primary text-white mt-6 py-2 rounded hover:bg-kk col-span-full md:col-span-1">
+            <button class=" bg-purple-500 hover:bg-purple-600 text-white mt-6 py-2 rounded col-span-full md:col-span-1">
                 Tampilkan
             </button>
         </form>
@@ -25,7 +25,7 @@
     {{-- Tabel Laporan --}}
     <div class="bg-white rounded shadow overflow-x-auto">
         <table class="min-w-full text-sm text-left">
-            <thead class="bg-gray-100">
+             <thead class="bg-gray-300">
                 <tr>
                     <th class="px-4 py-3">Tanggal</th>
                     <th class="px-4 py-3">Jenis</th>

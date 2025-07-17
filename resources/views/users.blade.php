@@ -41,7 +41,7 @@
 
     <!-- Tombol buka modal tambah -->
     <button onclick="openModal()"
-        class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
+        class="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
         <img src="https://api.iconify.design/mdi/account-plus.svg?color=white" alt="Add User" class="w-5 h-5">
         Tambah User
     </button>

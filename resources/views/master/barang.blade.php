@@ -34,8 +34,8 @@
          </div>
 </div>
         
-            <button  onclick="openModal()" type="submit" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
-                <img src="https://api.iconify.design/mdi:plus.svg?color=white" alt="Add Icon" />Tambah
+            <button  onclick="openModal()" type="submit" class="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
+                <img src="https://api.iconify.design/mdi:plus.svg?color=white" alt="Add Icon" />Tambah Barang
             </button>
         <div id="modal-tambah-barang" onclick="handleBackdropClick(event)" class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
             <!-- Modal box -->
@@ -71,7 +71,7 @@
                 </div>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">Simpan</button>
+                    <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">Simpan</button>
                 </div>
             </form>
             </div>
