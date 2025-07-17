@@ -25,7 +25,7 @@
 
     <!-- Tombol buka modal tambah -->
     <button onclick="openModal()"
-        class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
+        class="flex items-center gap-2  bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
         <img src="https://api.iconify.design/mdi/plus.svg?color=white" alt="Add Icon" class="w-5 h-5"> Tambah Kategori
     </button>
 </div>
@@ -58,7 +58,7 @@
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeModal()"
                     class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
-                <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                <button type="submit" class=" bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
     </div>
@@ -120,11 +120,11 @@
                             <input type="text" name="category_name" value="{{ $kategori->category_name }}" required
                                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
                         </div>
-                        <div class="flex justify-end gap-2">
+                        <div class="flex justify-end gap-2 mt-2">
                             <button type="button" onclick="closeEditModal({{ $kategori->id }})"
                                 class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                             <button type="submit"
-                                class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                                class=" bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Simpan</button>
                         </div>
                     </form>
                 </div>
