@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'Aplikasi Barang')</title>
-
+    <link rel="shortcut icon" href="{{ asset('logo.png') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <script defer src="https://unpkg.com/alpinejs"></script>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
@@ -87,9 +87,8 @@
 
             {{-- Main Content --}}
             <main :class="sidebarOpen" class="transition-all duration-300 flex-1 overflow-y-hidden pl-2 pt-1">
-                <div class="bg-white rounded-tl-2xl shadow py-6 pl-6 pr-2 h-[calc(100vh-4rem)] flex flex-col">
+                <div class="bg-main rounded-tl-2xl shadow py-6 pl-6 pr-2 h-[calc(100vh-4rem)] flex flex-col">
                     @include('partials.alert')
-
                     <div class="overflow-y-auto flex-1">
                         @yield('content')
                     </div>

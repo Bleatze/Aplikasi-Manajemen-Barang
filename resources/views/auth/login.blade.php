@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Login</title>
     @vite('resources/css/app.css')
+    <link rel="shortcut icon" href="{{ asset('logo.png') }}" type="image/x-icon">
     <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
@@ -66,7 +67,7 @@
             </div>
 
             <button type="submit" id="loginButton"
-                    class="w-full bg-primary text-white py-2 rounded hover:bg-kk transition-colors duration-200 flex items-center justify-center relative">
+                    class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded transition-colors duration-200 flex items-center justify-center relative">
                 <span id="buttonText">Masuk</span>
                 <svg id="spinner" class="animate-spin h-5 w-5 ml-2 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

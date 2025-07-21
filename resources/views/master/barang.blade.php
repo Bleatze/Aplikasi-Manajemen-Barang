@@ -36,7 +36,7 @@
         </form>
 
         <button onclick="openModal()" type="submit"
-            class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
+            class="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
             <img src="https://api.iconify.design/mdi:plus.svg?color=white" alt="Add Icon" />Tambah
         </button>
         <div id="modal-tambah-barang" onclick="handleBackdropClick(event)"
@@ -98,7 +98,7 @@
                         <button type="button" onclick="closeModal()"
                             class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                         <button type="submit"
-                            class="bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">Simpan</button>
+                            class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">Simpan</button>
                     </div>
                 </form>
 
@@ -216,7 +216,7 @@
                                     <button type="button" onclick="closeEditModal({{ $ware->id }})"
                                         class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                                     <button type="submit"
-                                        class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                                        class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded ">Simpan</button>
                                 </div>
                             </form>
                         </div>
