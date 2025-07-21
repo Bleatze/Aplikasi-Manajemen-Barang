@@ -52,6 +52,9 @@
             display: none !important;
         }
     </style>
+    @stack('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 </head>
 
 <body class="font-sans  bg-ob">
@@ -107,12 +110,16 @@
             if (alert) {
                 alert.classList.remove('animate-fade');
                 alert.classList.add('animate-out');
-                alert.addEventListener('animationend', () => alert.remove(), { once: true });
+                alert.addEventListener('animationend', () => alert.remove(), {
+                    once: true
+                });
             }
         }
     </script>
 
     @yield('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    @stack('scripts')
 </body>
 
 </html>

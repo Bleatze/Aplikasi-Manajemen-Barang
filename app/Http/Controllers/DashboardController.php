@@ -104,9 +104,43 @@ class DashboardController extends Controller
         return view('transaksi.barang-keluar', compact('wareOuts', 'wares'));
     }
 
-    public function laporan()
+    public function laporan(Request $request)
     {
-        return view('laporan');
+
+        $start = $request->start_date;
+        $end = $request->end_date;
+
+        $barangMasuk = WareIn::with('ware')
+            ->when($start && $end, function ($query) use ($start, $end) {
+                $query->whereBetween('created_at', [$start . ' 00:00:00', $end . ' 23:59:59']);
+            })
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'tanggal' => $item->created_at,
+                    'jenis' => 'Masuk',
+                    'barang' => $item->ware->ware_name,
+                    'jumlah' => $item->amount,
+                ];
+            });
+
+        $barangKeluar = WareOut::with('ware')
+            ->when($start && $end, function ($query) use ($start, $end) {
+                $query->whereBetween('created_at', [$start . ' 00:00:00', $end . ' 23:59:59']);
+            })
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'tanggal' => $item->created_at,
+                    'jenis' => 'Keluar',
+                    'barang' => $item->ware->ware_name,
+                    'jumlah' => $item->amount,
+                ];
+            });
+
+        $laporan = $barangMasuk->merge($barangKeluar)->sortByDesc('tanggal');
+
+        return view('laporan', compact('laporan'));
     }
 
     public function users(Request $request)

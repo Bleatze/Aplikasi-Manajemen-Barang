@@ -88,7 +88,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($wareIns as $wareIn)
+                @forelse ($wareIns as $wareIn)
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $wareIn->created_at->toDateString() }}</td>
                         <td class="px-4 py-2">{{ $wareIn->ware->ware_name }}</td>
@@ -166,11 +166,15 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center px-4 py-2">Tidak ada data</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
-        <div id="modal-confirm-delete" onclick="handleBackdropClickDelete(event)"
+    <div id="modal-confirm-delete" onclick="handleBackdropClickDelete(event)"
         class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
         <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-lg relative">
             <button onclick="closeDeleteModal()" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
@@ -288,7 +292,7 @@
                 });
             }
         }
-                let deletewareinId = null;
+        let deletewareinId = null;
 
         function openDeleteModal(id) {
             deletewareinId = id;

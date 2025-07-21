@@ -13,42 +13,33 @@ class WareOut extends Model
         return $this->belongsTo(Ware::class, 'ware_id');
     }
 
-    protected static function booted()
-    {
-        // Tambah: stok berkurang
-        static::created(function ($wareOut) {
-            if ($wareOut->ware) {
-                $wareOut->ware->decrement('stock', $wareOut->amount);
-            }
-        });
+   protected static function booted()
+{
+    static::created(function ($wareOut) {
+        static::updateStock($wareOut->ware_id);
+    });
 
-        // Edit: jika ware_id berubah, stok lama ditambah kembali, stok baru dikurangi
-        static::updated(function ($wareOut) {
-            $originalWareId = $wareOut->getOriginal('ware_id');
-            $originalAmount = $wareOut->getOriginal('amount');
+    static::updated(function ($wareOut) {
+        $originalWareId = $wareOut->getOriginal('ware_id');
+        static::updateStock($originalWareId);
+        static::updateStock($wareOut->ware_id);
+    });
 
-            if ($originalWareId != $wareOut->ware_id) {
-                $oldWare = Ware::find($originalWareId);
-                if ($oldWare) {
-                    $oldWare->increment('stock', $originalAmount);
-                }
+    static::deleted(function ($wareOut) {
+        static::updateStock($wareOut->ware_id);
+    });
+}
 
-                if ($wareOut->ware) {
-                    $wareOut->ware->decrement('stock', $wareOut->amount);
-                }
-            } else {
-                $selisih = $wareOut->amount - $originalAmount;
-                if ($wareOut->ware && $selisih !== 0) {
-                    $wareOut->ware->decrement('stock', $selisih);
-                }
-            }
-        });
+protected static function updateStock($wareId)
+{
+    $totalIn = \App\Models\WareIn::where('ware_id', $wareId)->sum('amount');
+    $totalOut = static::where('ware_id', $wareId)->sum('amount');
 
-        // Hapus: stok dikembalikan
-        static::deleted(function ($wareOut) {
-            if ($wareOut->ware) {
-                $wareOut->ware->increment('stock', $wareOut->amount);
-            }
-        });
+    $ware = \App\Models\Ware::find($wareId);
+    if ($ware) {
+        $ware->stock = $totalIn - $totalOut;
+        $ware->save();
     }
+}
+
 }
