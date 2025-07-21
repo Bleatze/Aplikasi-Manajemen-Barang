@@ -137,7 +137,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-4 py-3">{{ $loop->iteration }}</td>
                         <td class="px-4 py-3">{{ $user->name }}</td>
@@ -252,7 +252,11 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center px-4 py-2">Tidak ada data</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -441,7 +445,7 @@
                 passwordWrapper.classList.remove('hidden');
             } else {
                 passwordWrapper.classList.add('hidden');
-        
+
                 if (passwordInput) {
                     passwordInput.value = '';
                     passwordInput.type = 'password';
