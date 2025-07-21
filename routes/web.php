@@ -40,9 +40,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/barang/add', [WareController::class, 'add'])->name('barang.add');
     Route::put('/barang/{id}', [WareController::class, 'update'])->name('barang.update');
     Route::delete('/barang/{id}', [WareController::class, 'destroy'])->name('barang.destroy');
-    
+
     Route::get('/barang-masuk', [DashboardController::class, 'barangMasuk'])->name('barang-masuk.index');
+    Route::post('/barang-masuk/add', [WareController::class, 'inAdd'])->name('barang-masuk.add');
+    Route::put('/barang-masuk/{id}', [WareController::class, 'inUpdate'])->name('barang-masuk.update');
+    Route::delete('/barang-masuk/{id}', [WareController::class, 'inDestroy'])->name('barang-masuk.destroy');
+    
     Route::get('/barang-keluar', [DashboardController::class, 'barangKeluar'])->name('barang-keluar.index');
+    Route::post('/barang-keluar/add', [WareController::class, 'outAdd'])->name('barang-keluar.add');
+    Route::put('/barang-keluar/{id}', [WareController::class, 'outUpdate'])->name('barang-keluar.update');
+    Route::delete('/barang-keluar/{id}', [WareController::class, 'outDestroy'])->name('barang-keluar.destroy');
+
     Route::get('/laporan', [DashboardController::class, 'laporan'])->name('laporan.index');
     Route::get('/users', [DashboardController::class, 'users'])->name('users.index');
     Route::post('/user/add', [UserController::class, 'add'])->name('users.add');
