@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Ware;
+use App\Models\WareIn;
+use App\Models\WareOut;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,7 +17,7 @@ class DashboardController extends Controller
         $labels = [
             '2025' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September'],
             '2024' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli'],
-            '2023' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni','Juli','Agustus','September','Oktober','November','Desember']
+            '2023' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
         ];
 
         $barangMasuk = [
@@ -63,27 +65,43 @@ class DashboardController extends Controller
 
     public function barang(Request $request)
     {
-        $query = Ware::with(['category','unit']);
-        if($request->category_id){
-            $query->where('category_id',$request->category_id);
+        $query = Ware::with(['category', 'unit']);
+        if ($request->category_id) {
+            $query->where('category_id', $request->category_id);
         }
-        if($request->search){
-            $query->where('ware_name','like','%' . $request->search . '%');
+        if ($request->search) {
+            $query->where('ware_name', 'like', '%' . $request->search . '%');
         }
         $wares = $query->get();
         $units = Unit::all();
         $categories = Category::all();
-        return view('master.barang',compact('wares','categories','units'));
+        return view('master.barang', compact('wares', 'categories', 'units'));
     }
 
-    public function barangMasuk()
+    public function barangMasuk(Request $request)
     {
-        return view('transaksi.barang-masuk');
+        $query = WareIn::with(['ware']);
+        if ($request->search) {
+            $query->whereHas('ware', function ($q) use ($request) {
+                $q->where('ware_name', 'like', '%' . $request->search . '%');
+            });
+        }
+        $wareIns = $query->get();
+        $wares = Ware::all();
+        return view('transaksi.barang-masuk', compact('wareIns', 'wares'));
     }
 
-    public function barangKeluar()
+    public function barangKeluar(Request $request)
     {
-        return view('transaksi.barang-keluar');
+        $query = WareOut::with(['ware']);
+        if ($request->search) {
+            $query->whereHas('ware', function ($q) use ($request) {
+                $q->where('ware_name', 'like', '%' . $request->search . '%');
+            });
+        }
+        $wareOuts = $query->get();
+        $wares = Ware::all();
+        return view('transaksi.barang-keluar', compact('wareOuts', 'wares'));
     }
 
     public function laporan()
@@ -101,7 +119,7 @@ class DashboardController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
@@ -110,6 +128,5 @@ class DashboardController extends Controller
         $users = $query->get();
 
         return view('users', compact('users'));
-
     }
 }

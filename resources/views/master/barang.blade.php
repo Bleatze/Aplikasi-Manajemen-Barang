@@ -120,7 +120,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($wares as $index => $ware)
+                @foreach ($wares as $ware)
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2">{{ $ware->ware_name }}</td>
