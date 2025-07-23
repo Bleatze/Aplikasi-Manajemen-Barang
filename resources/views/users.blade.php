@@ -40,7 +40,7 @@
 
         <!-- Tombol buka modal tambah -->
         <button onclick="openModal()"
-            class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded hover:bg-kk transition">
+            class="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition">
             <img src="https://api.iconify.design/mdi/account-plus.svg?color=white" alt="Add User" class="w-5 h-5">
             Tambah User
         </button>
@@ -118,7 +118,7 @@
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeModal()"
                         class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                    <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Simpan</button>
                 </div>
             </form>
         </div>
@@ -247,7 +247,7 @@
                                     <button type="button" onclick="closeEditModal({{ $user->id }})"
                                         class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
                                     <button type="submit"
-                                        class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                                        class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Simpan</button>
                                 </div>
                             </form>
                         </div>
