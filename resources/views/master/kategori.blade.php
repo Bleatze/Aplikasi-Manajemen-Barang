@@ -65,75 +65,75 @@
     </div>
 </div>
 
-{{-- Tabel daftar kategori --}}
-<div class="bg-white rounded shadow overflow-x-auto">
-    <table class="min-w-full text-sm text-left">
-        <thead class="bg-gray-300 text-gray-700">
-            <tr>
-                <th class="px-4 py-3">No</th>
-                <th class="px-4 py-3">Nama Kategori</th>
-                <th class="px-4 py-3 text-center">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($kategoris as $kategori)
-            <tr class="border-b hover:bg-gray-50">
-                <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                <td class="px-4 py-3">{{ $kategori->category_name }}</td>
-                <td class="px-4 py-3 text-center space-x-2">
-                    <button onclick="openEditModal({{ $kategori->id }})"
-                        class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
-                        <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1"
-                            alt="Edit"> Edit
-                    </button>
-                    <button onclick="openDeleteModal({{ $kategori->id }})"
-                        class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
-                        <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1"
-                            alt="Delete"> Hapus
-                    </button>
-                </td>
-            </tr>
+    {{-- Tabel daftar kategori --}}
+    <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-300 text-gray-700">
+                <tr>
+                    <th class="px-4 py-3">No</th>
+                    <th class="px-4 py-3">Nama Kategori</th>
+                    <th class="px-4 py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($kategoris as $kategori)
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-3">{{ $kategori->category_name }}</td>
+                        <td class="px-4 py-3 text-center space-x-2">
+                            <button onclick="openEditModal({{ $kategori->id }})"
+                                class="inline-flex items-center px-3 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600">
+                                <img src="https://api.iconify.design/mdi/pencil.svg?color=white" class="w-4 h-4 mr-1"
+                                    alt="Edit"> Edit
+                            </button>
+                            <button onclick="openDeleteModal({{ $kategori->id }})"
+                                class="inline-flex items-center px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">
+                                <img src="https://api.iconify.design/mdi/trash-can.svg?color=white" class="w-4 h-4 mr-1"
+                                    alt="Delete"> Hapus
+                            </button>
+                        </td>
+                    </tr>
 
-            <!-- Modal edit kategori -->
-            <div id="modal-edit-kategori-{{ $kategori->id }}" onclick="handleBackdropClickEdit(event)"
-                class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
-                <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg relative">
-                    <button onclick="closeEditModal({{ $kategori->id }})"
-                        class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
-                        <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
-                    </button>
-                    @if ($errors->getBag('edit_' . $kategori->id)->any())
-                    <div
-                        class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 animate-fade">
-                        <ul class="mt-1 list-disc list-inside text-sm">
-                            @foreach ($errors->getBag('edit_' . $kategori->id)->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <!-- Modal edit kategori -->
+                    <div id="modal-edit-kategori-{{ $kategori->id }}" onclick="handleBackdropClickEdit(event)"
+                        class="fixed inset-0 bg-transparent backdrop-blur-sm hidden justify-center items-center z-50">
+                        <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-lg relative">
+                            <button onclick="closeEditModal({{ $kategori->id }})"
+                                class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
+                                <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
+                            </button>
+                            @if ($errors->getBag('edit_' . $kategori->id)->any())
+                                <div
+                                    class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 animate-fade">
+                                    <ul class="mt-1 list-disc list-inside text-sm">
+                                        @foreach ($errors->getBag('edit_' . $kategori->id)->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <h2 class="text-xl font-semibold mb-4">Edit Kategori</h2>
+                            <form action="{{ route('kategori.update', $kategori->id) }}" method="POST" class="space-y-4">
+                                @csrf
+                                @method('PUT')
+                                <div>
+                                    <label class="block text-sm font-medium">Nama Kategori</label>
+                                    <input type="text" name="category_name" value="{{ $kategori->category_name }}"
+                                        required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
+                                </div>
+                                <div class="flex justify-end gap-2">
+                                    <button type="button" onclick="closeEditModal({{ $kategori->id }})"
+                                        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
+                                    <button type="submit"
+                                        class="bg-primary text-white px-4 py-2 rounded hover:bg-kk">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    @endif
-                    <h2 class="text-xl font-semibold mb-4">Edit Kategori</h2>
-                    <form action="{{ route('kategori.update', $kategori->id) }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('PUT')
-                        <div>
-                            <label class="block text-sm font-medium">Nama Kategori</label>
-                            <input type="text" name="category_name" value="{{ $kategori->category_name }}" required
-                                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
-                        </div>
-                        <div class="flex justify-end gap-2 mt-2">
-                            <button type="button" onclick="closeEditModal({{ $kategori->id }})"
-                                class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">Batal</button>
-                            <button type="submit"
-                                class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded ">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
 <!-- Modal konfirmasi hapus -->
 <div id="modal-confirm-delete" onclick="handleBackdropClickDelete(event)"

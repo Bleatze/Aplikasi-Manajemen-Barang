@@ -106,10 +106,10 @@
                 </div>
             </div>
             @empty
-            <tr>
-                <td colspan="3" class="px-4 py-2 text-center text-gray-500">Tidak ada data satuan.</td>
-            </tr>
-            @endforelse
+                    <tr>
+                        <td colspan="3" class="text-center px-4 py-2">Tidak ada data</td>
+                    </tr>
+                @endforelse
         </tbody>
     </table>
 </div>

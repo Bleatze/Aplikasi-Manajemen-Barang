@@ -120,7 +120,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($wares as $ware)
+                @forelse ($wares as $ware)
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2">{{ $ware->ware_name }}</td>
@@ -221,7 +221,11 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center px-4 py-2">Tidak ada data</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

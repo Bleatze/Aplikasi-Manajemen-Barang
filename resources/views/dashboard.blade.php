@@ -2,104 +2,54 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<h1 class="text-2xl font-semibold mb-4">Dashboard</h1>
-<style>
-#notifKritis {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    max-width: 300px;
-    z-index: 50;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-@keyframes fadeInNotif {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade {
-    animation: fadeInNotif 0.3s ease-out;
-}
-.animate-out {
-    animation: fadeOutNotif 0.3s ease-out forwards;
-}
-@keyframes fadeOutNotif {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(10px); }
-}
-</style>
+    <h1 class="text-2xl font-semibold mb-4">Dashboard</h1>
 
-@php
-$barangList = [
-    ['nama' => 'Keyboard Logitech', 'stok' => 25],
-    ['nama' => 'Mouse Wireless', 'stok' => 8],
-    ['nama' => 'Kabel LAN 5M', 'stok' => 3],
-    ['nama' => 'Harddisk 1TB', 'stok' => 15],
-    ['nama' => 'Monitor LED 24"', 'stok' => 40],
-    ['nama' => 'Ram Stick 8GB', 'stok' => 5],
-    ['nama' => 'Mousepad', 'stok' => 1],
-];
-
-foreach ($barangList as &$barang) {
-    if ($barang['stok'] <= 5) {
-        $barang['status'] = 'Kritis';
-        $barang['warna'] = 'bg-red-100 text-red-700';
-        $barang['statusValue'] = 'kritis';
-    } elseif ($barang['stok'] <= 20) {
-        $barang['status'] = 'Menipis';
-        $barang['warna'] = 'bg-yellow-100 text-yellow-700';
-        $barang['statusValue'] = 'menipis';
-    } else {
-        $barang['status'] = 'Aman';
-        $barang['warna'] = 'bg-green-100 text-green-700';
-        $barang['statusValue'] = 'aman';
-    }
-}
-unset($barang);
-$barangKritis = array_filter($barangList, fn($b) => $b['statusValue'] === 'kritis');
-@endphp
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white p-4 rounded shadow">
-        <p class="text-gray-500">Total Barang</p>
-        <p class="text-xl font-bold">{{ array_sum($barangMasuk['2025']) }}</p>
-    </div>
-    <div class="bg-white p-4 rounded shadow">
-        <p class="text-gray-500">Barang Masuk Bulan Ini</p>
-        <p class="text-xl font-bold">{{ end($barangMasuk['2025']) }}</p>
-    </div>
-    <div class="bg-white p-4 rounded shadow">
-        <p class="text-gray-500">Barang Keluar Bulan Ini</p>
-        <p class="text-xl font-bold">{{ end($barangKeluar['2025']) }}</p>
-    </div>
-</div>
-
-<div id="notifKritis" class="bg-white p-4 rounded shadow animate-fade relative">
-    <div class="flex justify-between items-center mb-2">
-        <h2 class="text-md font-semibold text-red-600 flex items-center gap-2">
-            Barang Kritis
-        </h2>
-        <div class="flex items-center gap-2">
-            <button id="minimizeNotif" class="text-red-500 hover:text-red-700 text-sm px-2">–</button>
-            <button id="closeNotif" class="text-red-500 hover:text-red-700 text-sm px-2">×</button>
+    {{-- Ringkasan --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white p-4 rounded shadow">
+            <p class="text-gray-500">Total Barang</p>
+            <p class="text-xl font-bold">{{ $totalBarang }}</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <p class="text-gray-500">Barang Masuk Bulan Ini</p>
+            <p class="text-xl font-bold">{{ $barangMasukBulanIni }}</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <p class="text-gray-500">Barang Keluar Bulan Ini</p>
+            <p class="text-xl font-bold">{{ $barangKeluarBulanIni }}</p>
         </div>
     </div>
-    <div id="notifContent">
-        @if(count($barangKritis) > 0)
-        <ul class="text-sm text-gray-700">
-            @foreach ($barangKritis as $barang)
-            <li class="border-b py-1 flex justify-between">
-                <span>{{ $barang['nama'] }}</span>
-                <span class="font-semibold text-red-600">{{ $barang['stok'] }}</span>
-            </li>
-            @endforeach
-        </ul>
-        @else
-        <p class="text-green-600">Semua stok dalam kondisi aman.</p>
-        @endif
-    </div>
-</div>
 
+    {{-- Grafik --}}
+    <div class="bg-white p-6 rounded shadow space-y-8">
+        {{-- Pie Chart --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- Pie Chart Masuk --}}
+            <div class="flex flex-col items-center justify-center h-[500px]">
+                <h3 class="text-center text-gray-600 mb-2">Barang Masuk Bulan Ini</h3>
+                <div class="aspect-square w-[500px]">
+                    <canvas id="barangMasukPieChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+
+            {{-- Pie Chart Keluar --}}
+            <div class="flex flex-col items-center justify-center h-[500px]">
+                <h3 class="text-center text-gray-600 mb-2">Barang Keluar Bulan Ini</h3>
+                <div class="aspect-square w-[500px]">
+                    <canvas id="barangKeluarPieChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- Filter Tahun --}}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h2 class="text-lg font-semibold text-gray-700">Trend Barang Masuk & Keluar</h2>
+            <div class="flex items-center gap-2">
+                <label for="filterTahun" class="text-gray-600">Tahun:</label>
+                <select id="filterTahun" class="border border-gray-300 rounded px-3 py-2 shadow-sm">
+                    @foreach ($availableYears as $year)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endforeach
 
 <div class="bg-white p-4 rounded shadow mt-6">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
@@ -149,113 +99,149 @@ $barangKritis = array_filter($barangList, fn($b) => $b['statusValue'] === 'kriti
                     <option value="kritis">Kritis</option>
                 </select>
             </div>
+        </div>
 
+        {{-- Line Chart --}}
+        <div class="h-[400px]">
+            <canvas id="barangLineChart" class="w-full h-full"></canvas>
         </div>
     </div>
-
-    <!-- Tabel Stok Barang -->
-    <table class="w-full text-left border border-gray-200">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="p-2 border">Nama Barang</th>
-                <th class="p-2 border">Stok</th>
-                <th class="p-2 border">Status</th>
-            </tr>
-        </thead>
-        <tbody id="barangTable">
-            @foreach ($barangList as $barang)
-            <tr data-status="{{ $barang['statusValue'] }}" data-nama="{{ strtolower($barang['nama']) }}">
-                <td class="p-2 border">{{ $barang['nama'] }}</td>
-                <td class="p-2 border">{{ $barang['stok'] }}</td>
-                <td class="p-2 border">
-                    <span class="px-2 py-1 rounded {{ $barang['warna'] }} text-sm">{{ $barang['status'] }}</span>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-
 @endsection
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const ctx = document.getElementById('barangLineChart').getContext('2d');
-const filterTahun = document.getElementById('filterTahun');
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data dari controller
+        const datasetByYear = @json($datasetByYear);
+        const pieMasukLabels = @json($pieMasukData['labels']);
+        const pieMasukData = @json($pieMasukData['data']);
+        const pieKeluarLabels = @json($pieKeluarData['labels']);
+        const pieKeluarData = @json($pieKeluarData['data']);
 
-const datasetByYear = {
-    '2025': { labels: @json($labels['2025']), masuk: @json($barangMasuk['2025']), keluar: @json($barangKeluar['2025']) },
-    '2024': { labels: @json($labels['2024']), masuk: @json($barangMasuk['2024']), keluar: @json($barangKeluar['2024']) },
-    '2023': { labels: @json($labels['2023']), masuk: @json($barangMasuk['2023']), keluar: @json($barangKeluar['2023']) },
-};
+        const filterTahun = document.getElementById('filterTahun');
+        const ctxLine = document.getElementById('barangLineChart').getContext('2d');
+        let chartLine;
 
-let chart;
-function renderChart(tahun) {
-    const data = datasetByYear[tahun];
-    if (!data) return;
+        function renderLineChart(tahun) {
+            const data = datasetByYear[tahun];
+            if (!data) return;
 
-    if (chart) chart.destroy();
+            if (chartLine) chartLine.destroy();
 
-    const gradientMasuk = ctx.createLinearGradient(0, 0, 0, 200);
-    gradientMasuk.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
-    gradientMasuk.addColorStop(1, 'rgba(59, 130, 246, 0)');
+            const gradientMasuk = ctxLine.createLinearGradient(0, 0, 0, 400);
+            gradientMasuk.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
+            gradientMasuk.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
-    const gradientKeluar = ctx.createLinearGradient(0, 0, 0, 200);
-    gradientKeluar.addColorStop(0, 'rgba(249, 115, 22, 0.3)');
-    gradientKeluar.addColorStop(1, 'rgba(249, 115, 22, 0)');
+            const gradientKeluar = ctxLine.createLinearGradient(0, 0, 0, 400);
+            gradientKeluar.addColorStop(0, 'rgba(249, 115, 22, 0.3)');
+            gradientKeluar.addColorStop(1, 'rgba(249, 115, 22, 0)');
 
-    chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: data.labels,
-            datasets: [
-                { label: 'Barang Masuk', data: data.masuk, borderColor: '#3b82f6', backgroundColor: gradientMasuk, tension: 0.4, fill: true },
-                { label: 'Barang Keluar', data: data.keluar, borderColor: '#f97316', backgroundColor: gradientKeluar, tension: 0.4, fill: true }
-            ]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } }
-    });
-}
+            chartLine = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                            label: 'Barang Masuk',
+                            data: data.masuk,
+                            borderColor: '#3b82f6',
+                            backgroundColor: gradientMasuk,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Barang Keluar',
+                            data: data.keluar,
+                            borderColor: '#f97316',
+                            backgroundColor: gradientKeluar,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 10
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
 
-renderChart(filterTahun.value);
-filterTahun.addEventListener('change', () => renderChart(filterTahun.value));
+        // Pie Chart Masuk
+        const ctxMasuk = document.getElementById('barangMasukPieChart').getContext('2d');
+        new Chart(ctxMasuk, {
+            type: 'doughnut',
+            data: {
+                labels: pieMasukLabels,
+                datasets: [{
+                    data: pieMasukData,
+                    backgroundColor: [
+                        '#21579a', '#2563ad', '#2c6fc0', '#337bd3', '#3b88e6',
+                        '#4c94ea', '#5ca0ed', '#6dacef', '#7eb8f2', '#8ec4f5',
+                        '#9fd0f7', '#afdcfa', '#bfe8fc', '#cff4ff', '#dcf6ff',
+                        '#e6f7ff', '#eef9ff', '#f3fbff', '#f8fdff', '#fcfeff'
+                    ].slice(0, pieMasukData.length)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 16
+                        }
+                    }
+                }
+            }
+        });
 
-const filterStatus = document.getElementById('filterStatus');
-const searchInput = document.getElementById('searchInput');
-const rows = document.querySelectorAll('#barangTable tr');
+        // Pie Chart Keluar
+        const ctxKeluar = document.getElementById('barangKeluarPieChart').getContext('2d');
+        new Chart(ctxKeluar, {
+            type: 'doughnut',
+            data: {
+                labels: pieKeluarLabels,
+                datasets: [{
+                    data: pieKeluarData,
+                    backgroundColor: [
+                        '#fb7c1d', '#fb923c', '#fca661', '#fcb076', '#fcbf85',
+                        '#fdba74', '#fdbc83', '#fdd5a5', '#fed7aa', '#fee0b8',
+                        '#fee5c1', '#feebcd', '#fef0d6', '#fff4df', '#fff7e5',
+                        '#fff9eb', '#fffaf0', '#fffdf5', '#fffef9', '#ffffff'
+                    ].slice(0, pieMasukData.length)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 16,
+                        }
+                    }
+                }
+            }
+        });
 
-function filterTable() {
-    const status = filterStatus.value;
-    const search = searchInput.value.toLowerCase();
-    rows.forEach(row => {
-        const rowStatus = row.dataset.status;
-        const rowNama = row.dataset.nama;
-        const visible = (status === 'semua' || rowStatus === status) && rowNama.includes(search);
-        row.style.display = visible ? '' : 'none';
-    });
-}
-
-filterStatus.addEventListener('change', filterTable);
-searchInput.addEventListener('keyup', filterTable);
-
-document.getElementById('minimizeNotif').onclick = () => {
-    const content = document.getElementById('notifContent');
-    const btn = document.getElementById('minimizeNotif');
-    if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        btn.textContent = '–';
-    } else {
-        content.classList.add('hidden');
-        btn.textContent = '+';
-    }
-};
-
-document.getElementById('closeNotif').onclick = () => {
-    const notif = document.getElementById('notifKritis');
-    notif.classList.remove('animate-fade');
-    notif.classList.add('animate-out');
-    notif.addEventListener('animationend', () => notif.remove(), { once: true });
-};
-</script>
+        // Init chart
+        renderLineChart(filterTahun.value);
+        filterTahun.addEventListener('change', () => renderLineChart(filterTahun.value));
+    </script>
 @endsection

@@ -33,28 +33,27 @@
                     <img src="https://api.iconify.design/mdi/close.svg?color=gray" class="w-5 h-5" />
                 </button>
                 {{-- ALERT ERROR TAMBAH BARANG --}}
-@if (
-    ($errors->has('amount') &&
-    !collect($errors->getBags())->keys()->contains(fn($bag) => str_starts_with($bag, 'edit_')))
-    || session('kurang')
-)
-    <div class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded m-4 relative">
-        <button type="button" onclick="this.parentElement.remove()"
-            class="absolute top-1 right-2 text-xl font-bold text-red-600 hover:text-red-800">&times;</button>
-        <strong class="font-bold">Oops!</strong>
-        <ul class="mt-1 list-disc list-inside text-sm">
-            {{-- Error validasi Laravel --}}
-            @if ($errors->has('amount'))
-                <li>{{ $errors->first('amount') }}</li>
-            @endif
+                @if (
+                    ($errors->has('amount') &&
+                        !collect($errors->getBags())->keys()->contains(fn($bag) => str_starts_with($bag, 'edit_'))) ||
+                        session('kurang'))
+                    <div class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded m-4 relative">
+                        <button type="button" onclick="this.parentElement.remove()"
+                            class="absolute top-1 right-2 text-xl font-bold text-red-600 hover:text-red-800">&times;</button>
+                        <strong class="font-bold">Oops!</strong>
+                        <ul class="mt-1 list-disc list-inside text-sm">
+                            {{-- Error validasi Laravel --}}
+                            @if ($errors->has('amount'))
+                                <li>{{ $errors->first('amount') }}</li>
+                            @endif
 
-            {{-- Custom error dari controller --}}
-            @if (session('kurang'))
-                <li>{{ session('kurang') }}</li>
-            @endif
-        </ul>
-    </div>
-@endif
+                            {{-- Custom error dari controller --}}
+                            @if (session('kurang'))
+                                <li>{{ session('kurang') }}</li>
+                            @endif
+                        </ul>
+                    </div>
+                @endif
 
                 <h2 class="text-xl font-semibold mb-4">Tambah Barang</h2>
 
@@ -97,7 +96,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($wareOuts as $wareOut)
+                @forelse ($wareOuts as $wareOut)
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $wareOut->created_at->toDateString() }}</td>
                         <td class="px-4 py-2">{{ $wareOut->ware->ware_name }}</td>
@@ -175,7 +174,11 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center px-4 py-2">Tidak ada data</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
