@@ -22,7 +22,6 @@
 
     {{-- Grafik --}}
     <div class="bg-white p-6 rounded shadow space-y-8">
-        {{-- Pie Chart --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {{-- Pie Chart Masuk --}}
             <div class="flex flex-col items-center justify-center h-[500px]">
@@ -40,10 +39,12 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        {{-- Filter Tahun --}}
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 class="text-lg font-semibold text-gray-700">Trend Barang Masuk & Keluar</h2>
+    {{-- Trend Barang --}}
+    <div class="bg-white p-4 rounded shadow mt-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+            <h2 class="text-lg font-semibold">Trend Barang Masuk & Keluar</h2>
             <div class="flex items-center gap-2">
                 <label for="filterTahun" class="text-gray-600">Tahun:</label>
                 <select id="filterTahun" class="border border-gray-300 rounded px-3 py-2 shadow-sm">
@@ -53,18 +54,51 @@
                 </select>
             </div>
         </div>
-
-        {{-- Line Chart --}}
         <div class="h-[400px]">
             <canvas id="barangLineChart" class="w-full h-full"></canvas>
         </div>
+    </div>
+
+    {{-- Status Stok --}}
+    <div class="bg-white p-4 rounded shadow mt-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+            <h2 class="text-lg font-semibold">Status Stok Barang</h2>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+                        </svg>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="Cari Barang..."
+                        class="pl-10 pr-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none w-48">
+                </div>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-7 7V20l-4-2v-6.293l-7-7A1 1 0 013 4z" />
+                        </svg>
+                    </span>
+                    <select id="filterStatus" class="pl-10 pr-3 py-2 border border-gray-300 shadow-sm w-48">
+                        <option value="semua">Semua Status</option>
+                        <option value="aman">Aman</option>
+                        <option value="menipis">Menipis</option>
+                        <option value="kritis">Kritis</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        {{-- (Tabel atau konten lainnya bisa ditambahkan di sini) --}}
     </div>
 @endsection
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Data dari controller
         const datasetByYear = @json($datasetByYear);
         const pieMasukLabels = @json($pieMasukData['labels']);
         const pieMasukData = @json($pieMasukData['data']);
@@ -175,7 +209,7 @@
                         '#fdba74', '#fdbc83', '#fdd5a5', '#fed7aa', '#fee0b8',
                         '#fee5c1', '#feebcd', '#fef0d6', '#fff4df', '#fff7e5',
                         '#fff9eb', '#fffaf0', '#fffdf5', '#fffef9', '#ffffff'
-                    ].slice(0, pieMasukData.length)
+                    ].slice(0, pieKeluarData.length)
                 }]
             },
             options: {
@@ -186,14 +220,14 @@
                         position: 'right',
                         labels: {
                             boxWidth: 12,
-                            padding: 16,
+                            padding: 16
                         }
                     }
                 }
             }
         });
 
-        // Init chart
+        // Init Chart
         renderLineChart(filterTahun.value);
         filterTahun.addEventListener('change', () => renderLineChart(filterTahun.value));
     </script>
