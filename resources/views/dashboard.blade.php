@@ -134,7 +134,7 @@
         // Pie Chart Masuk
         const ctxMasuk = document.getElementById('barangMasukPieChart').getContext('2d');
         new Chart(ctxMasuk, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
                 labels: pieMasukLabels,
                 datasets: [{
@@ -165,7 +165,7 @@
         // Pie Chart Keluar
         const ctxKeluar = document.getElementById('barangKeluarPieChart').getContext('2d');
         new Chart(ctxKeluar, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
                 labels: pieKeluarLabels,
                 datasets: [{
