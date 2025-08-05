@@ -8,31 +8,95 @@ use App\Models\User;
 use App\Models\Ware;
 use App\Models\WareIn;
 use App\Models\WareOut;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $labels = [
-            '2025' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September'],
-            '2024' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli'],
-            '2023' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+        $totalBarang = Ware::count();
+
+        $now = Carbon::now();
+        $bulanIni = $now->month;
+        $tahunIni = $now->year;
+
+        $barangMasukBulanIni = WareIn::whereMonth('created_at', $bulanIni)
+            ->whereYear('created_at', $tahunIni)
+            ->sum('amount');
+
+        $barangKeluarBulanIni = WareOut::whereMonth('created_at', $bulanIni)
+            ->whereYear('created_at', $tahunIni)
+            ->sum('amount');
+
+        // === PIE CHART DATA ===
+        $pieMasuk = WareIn::selectRaw('wares.ware_name, SUM(ware_ins.amount) as total')
+            ->join('wares', 'ware_ins.ware_id', '=', 'wares.id')
+            ->whereMonth('ware_ins.created_at', $bulanIni)
+            ->whereYear('ware_ins.created_at', $tahunIni)
+            ->groupBy('ware_name')
+            ->get();
+
+        $pieKeluar = WareOut::selectRaw('wares.ware_name, SUM(ware_outs.amount) as total')
+            ->join('wares', 'ware_outs.ware_id', '=', 'wares.id')
+            ->whereMonth('ware_outs.created_at', $bulanIni)
+            ->whereYear('ware_outs.created_at', $tahunIni)
+            ->groupBy('ware_name')
+            ->get();
+
+        $pieMasukData = [
+            'labels' => $pieMasuk->pluck('ware_name'),
+            'data' => $pieMasuk->pluck('total'),
         ];
 
-        $barangMasuk = [
-            '2025' => [10, 20, 15, 25, 30, 40, 35, 50, 60],
-            '2024' => [8, 18, 12, 22, 28, 38, 45],
-            '2023' => [5, 15, 20, 25, 30, 30, 20, 30, 60, 50, 55, 60]
+        $pieKeluarData = [
+            'labels' => $pieKeluar->pluck('ware_name'),
+            'data' => $pieKeluar->pluck('total'),
         ];
 
-        $barangKeluar = [
-            '2025' => [5, 15, 10, 20, 25, 35, 30, 45, 55],
-            '2024' => [4, 14, 9, 19, 24, 34, 40],
-            '2023' => [3, 10, 15, 20, 25, 25, 30, 35, 19, 40, 20, 24]
-        ];
+        // === LINE CHART DATA PER TAHUN ===
+        $availableYears = WareIn::selectRaw('YEAR(created_at) as year')
+            ->union(WareOut::selectRaw('YEAR(created_at) as year'))
+            ->orderBy('year')
+            ->pluck('year')
+            ->unique()
+            ->values();
 
-        return view('dashboard', compact('labels', 'barangMasuk', 'barangKeluar'));
+        $datasetByYear = [];
+
+        foreach ($availableYears as $year) {
+            $labels = [];
+            $masuk = [];
+            $keluar = [];
+
+            for ($i = 1; $i <= 12; $i++) {
+                $labels[] = Carbon::create()->month($i)->format('M');
+
+                $masuk[] = WareIn::whereYear('created_at', $year)
+                    ->whereMonth('created_at', $i)
+                    ->sum('amount');
+
+                $keluar[] = WareOut::whereYear('created_at', $year)
+                    ->whereMonth('created_at', $i)
+                    ->sum('amount');
+            }
+
+            $datasetByYear[$year] = [
+                'labels' => $labels,
+                'masuk' => $masuk,
+                'keluar' => $keluar,
+            ];
+        }
+
+        return view('dashboard', compact(
+            'totalBarang',
+            'barangMasukBulanIni',
+            'barangKeluarBulanIni',
+            'availableYears',
+            'datasetByYear',
+            'pieMasukData',
+            'pieKeluarData'
+        ));
     }
 
     public function kategori(Request $request)
