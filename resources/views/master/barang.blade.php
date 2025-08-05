@@ -122,7 +122,19 @@
             <tbody>
                 @forelse ($wares as $ware)
                     <tr class="border-b">
-                        <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-2">
+                            {{ $loop->iteration }}
+                            @if ($ware->stock < $ware->min_stock)
+                                <span class="ml-2 relative group">
+                                    <img src="https://api.iconify.design/mdi/alert-circle.svg?color=red"
+                                        class="w-4 h-4 inline-block" alt="Stok Kritis">
+                                    <span
+                                        class="absolute left-1/2 -translate-x-1/2 mt-1 px-2 py-1 bg-red-500 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition z-10 whitespace-nowrap">
+                                        Stok kritis
+                                    </span>
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-4 py-2">{{ $ware->ware_name }}</td>
                         <td class="px-4 py-2">{{ $ware->category->category_name ?? '-' }}</td>
                         <td class="px-4 py-2">{{ $ware->unit->unit_name ?? '-' }}</td>

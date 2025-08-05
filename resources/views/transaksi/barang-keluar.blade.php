@@ -99,7 +99,7 @@
                 @forelse ($wareOuts as $wareOut)
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $wareOut->created_at->toDateString() }}</td>
-                        <td class="px-4 py-2">{{ $wareOut->ware->ware_name }}</td>
+                        <td class="px-4 py-2">{{ $wareOut->ware->ware_name $wareOut->ware->category->category_name}}</td>
                         <td class="px-4 py-2">{{ $wareOut->amount }}</td>
                         <td class="px-4 py-2 text-center space-x-2">
                             <button onclick="openEditModal({{ $wareOut->id }})"
